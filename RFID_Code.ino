@@ -8,32 +8,33 @@
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-byte card_ID[4];
-byte Name0[4] = {0xC3, 0x3D, 0x4C, 0x1C}; // Nacorda, Jeo Rodel
-byte Name1[4] = {0x73, 0xB9, 0x17, 0x13}; // Group 2
-byte Name2[4] = {0x00, 0x00, 0x00, 0x01}; // Acupicop, Gwenn Remielle
-byte Name3[4] = {0x00, 0x00, 0x00, 0x02}; // Amizola, Christian
-byte Name4[4] = {0x00, 0x00, 0x00, 0x03}; // Ayag, Khirk Johann
-byte Name5[4] = {0x00, 0x00, 0x00, 0x04}; // Bag-ao, Christian Rey
-byte Name6[4] = {0x00, 0x00, 0x00, 0x05}; // Banquel, John Dave
-byte Name7[4] = {0x00, 0x00, 0x00, 0x06}; // Canon, Ayesha Nicole
-byte Name8[4] = {0x00, 0x00, 0x00, 0x07}; // Cunanan, Jolo
-byte Name9[4] = {0x00, 0x00, 0x00, 0x08}; // Felisilda, Herald
-byte Name10[4] = {0x00, 0x00, 0x00, 0x09}; // Jabajab, Kate
-byte Name11[4] = {0x00, 0x00, 0x00, 0x10}; // Jumamil, Bridget Darby
-byte Name12[4] = {0x00, 0x00, 0x00, 0x11}; // Mumar, Starah Jewilli
-byte Name13[4] = {0x00, 0x00, 0x00, 0x12}; // Pajo, Danica
-byte Name14[4] = {0x00, 0x00, 0x00, 0x13}; // Poquita, Nina
+String card_ID = "";
 
-int NumbCard[14], j = 0;  
-int status[14], s = 0;        
+String Name0 = "195617628"; // Nacorda, Jeo Rodel
+String Name1 = "1151852319"; // Group 2
+String Name2 = "243944053"; // Acupicop, Gwenn Remielle
+String Name3 = "196611952"; // Amizola, Christian
+String Name4 = "1917711753"; // Ayag, Khirk Johann
+String Name5 = "83849653"; // Bag-ao, Christian Rey
+String Name6 = "3523514952"; // Banquel, John Dave
+String Name7 = "3565753"; // Canon, Ayesha Nicole
+String Name8 = "211909953"; // Cunanan, Jolo
+String Name9 = "22719212053"; // Felisilda, Herald
+String Name10 = "16311113652"; // Jabajab, Kate
+String Name11 = "1319412952"; // Jumamil, Bridget Darby
+String Name12 = "2271851853"; // Mumar, Starah Jewilli
+String Name13 = "21123611753"; // Pajo, Danica
+String Name14 = "17915610153"; // Poquita, Nina
+
+byte NumbCard[15], j = 0;  
+byte status[15], s = 0;        
 
 int const RedLed = 6;
 int const GreenLed = 5;
 int const Buzzer = 8;
 
-String LName, FName, CYear;
-int column[14], count = 2, n = 0;
+String LName, FName, NName, CYear;
+byte column[15], count = 2, n = 0, center;
 long Number;
 
 void setup() {
@@ -64,146 +65,181 @@ void loop() {
     return;
   if (!mfrc522.PICC_ReadCardSerial())
     return;
-  for (byte i = 0; i < mfrc522.uid.size; i++) {
-    card_ID[i] = mfrc522.uid.uidByte[i];
-    if (card_ID[i] == Name0[i]){
-      LName = "Nacorda";
-      FName = "Jeo Rodel";
-      CYear = "Instructor";
-      Number = 123456;
-      j = 0;
-      s = 0;
-    }
-    else if (card_ID[i] == Name1[i]){
-      LName = "Group 2";
-      FName = "RFID";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 1;
-      s = 1;
-    }
-    else if (card_ID[i] == Name2[i]){
-      LName = "Acupicop";
-      FName = "Gwenn Remielle";
-      CYear = "BSCpE-2A";
-      Number = 442694;
-      j = 2;
-      s = 2;
-    }
-    else if (card_ID[i] == Name3[i]){
-      LName = "Amizola";
-      FName = "Christian";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 3;
-      s = 3;
-    }
-    else if (card_ID[i] == Name4[i]){
-      LName = "Ayag";
-      FName = "Khirk Johann";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 4;
-      s = 4;
-    }
-    else if (card_ID[i] == Name5[i]){
-      LName = "Bag-ao";
-      FName = "Christian Rey";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 5;
-      s = 5;
-    }
-    else if (card_ID[i] == Name6[i]){
-      LName = "Banquel";
-      FName = "John Dave";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 6;
-      s = 6;
-    }
-    else if (card_ID[i] == Name7[i]){
-      LName = "Canon";
-      FName = "Ayesha Nicole";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 7;
-      s = 7;
-    }
-    else if (card_ID[i] == Name8[i]){
-      LName = "Cunanan";
-      FName = "Joseff Mari Luis";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 8;
-      s = 8;
-    }
-    else if (card_ID[i] == Name9[i]){
-      LName = "Felisilda";
-      FName = "Herald";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 9;
-      s = 9;
-    }
-    else if (card_ID[i] == Name10[i]){
-      LName = "Jabajab";
-      FName = "Kate";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 10;
-      s = 10;
-    }
-    else if (card_ID[i] == Name11[i]){
-      LName = "Jumamil";
-      FName = "Bridget Darby";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 11;
-      s = 11;
-    }
-    else if (card_ID[i] == Name12[i]){
-      LName = "Mumar";
-      FName = "Starah Jewilli";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 12;
-      s = 12;
-    }
-    else if (card_ID[i] == Name13[i]){
-      LName = "Pajo";
-      FName = "Danica";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 13;
-      s = 13;
-    }
-    else if (card_ID[i] == Name14[i]){
-      LName = "Poquita";
-      FName = "Nina Stephane";
-      CYear = "BSCpE-2A";
-      Number = 111111;
-      j = 14;
-      s = 14;
-    }
-    else{
-      digitalWrite(GreenLed, LOW);
-      digitalWrite(RedLed, HIGH);
-      digitalWrite(Buzzer, HIGH);
-      lcd.clear();
-      lcd.setCursor(3, 0);
-      lcd.print("Invalid ID");
-      delay(500);
-      digitalWrite(Buzzer, LOW);
-      goto cont;
-    }
+  for (byte i = 0; i < mfrc522.uid.size; i++)
+    card_ID += mfrc522.uid.uidByte[i];
+
+  if (card_ID == Name0){
+    card_ID = "";
+    LName = "Nacorda";
+    FName = "Jeo Rodel";
+    NName = "Sir Jeo";
+    CYear = "Instructor";
+    Number = 123456;
+    j = 0;
+    s = 0;
   }
+  else if (card_ID == Name1){
+    card_ID = "";
+    LName = "Group 2";
+    FName = "RFID";
+    NName = "Group 2";
+    CYear = "BSCpE-2A";
+    Number = 13;
+    j = 1;
+    s = 1;
+  }
+  else if (card_ID == Name2){
+    card_ID = "";
+    LName = "Acupicop";
+    FName = "Gwenn Remielle";
+    NName = "Gwenn";
+    CYear = "BSCpE-2A";
+    Number = 442694;
+    j = 2;
+    s = 2;
+  }
+  else if (card_ID == Name3){
+    card_ID = "";
+    LName = "Amizola";
+    FName = "Christian";
+    NName = "Christian";
+    CYear = "BSCpE-2A";
+    Number = 955357;
+    j = 3;
+    s = 3;
+  }
+  else if (card_ID == Name4){
+    card_ID = "";
+    LName = "Ayag";
+    FName = "Khirk Johann";
+    NName = "Khirk";
+    CYear = "BSCpE-2A";
+    Number = 676823;
+    j = 4;
+    s = 4;
+  }
+  else if (card_ID == Name5){
+    card_ID = "";
+    LName = "Bag-ao";
+    FName = "Christian Rey";
+    NName = "Rey";
+    CYear = "BSCpE-2A";
+    Number = 599979;
+    j = 5;
+    s = 5;
+  }
+  else if (card_ID == Name6){
+    card_ID = "";
+    LName = "Banquel";
+    FName = "John Dave";
+    NName = "Banquel";
+    CYear = "BSCpE-2A";
+    Number = 357690;
+    j = 6;
+    s = 6;
+  }
+  else if (card_ID == Name7){
+    card_ID = "";
+    LName = "Canon";
+    FName = "Ayesha Nicole";
+    NName = "Ayesha";
+    CYear = "BSCpE-2A";
+    Number = 263812;
+    j = 7;
+    s = 7;
+  }
+  else if (card_ID == Name8){
+    card_ID = "";
+    LName = "Cunanan";
+    FName = "Joseff Mari Luis";
+    NName = "Jolo";
+    CYear = "BSCpE-2A";
+    Number = 259013;
+    j = 8;
+    s = 8;
+  }
+  else if (card_ID == Name9){
+    card_ID = "";
+    LName = "Felisilda";
+    FName = "Herald";
+    NName = "Herald";
+    CYear = "BSCpE-2A";
+    Number = 144052;
+    j = 9;
+    s = 9;
+  }
+  else if (card_ID == Name10){
+    card_ID = "";
+    LName = "Jabajab";
+    FName = "Kate";
+    NName = "Kate";
+    CYear = "BSCpE-2A";
+    Number = 211723;
+    j = 10;
+    s = 10;
+  }
+  else if (card_ID == Name11){
+    card_ID = "";
+    LName = "Jumamil";
+    FName = "Bridget Darby";
+    NName = "Darby";
+    CYear = "BSCpE-2A";
+    Number = 745466;
+    j = 11;
+    s = 11;
+  }
+  else if (card_ID == Name12){
+    card_ID = "";
+    LName = "Mumar";
+    FName = "Starah Jewilli";
+    NName = "Starah";
+    CYear = "BSCpE-2A";
+    Number = 391952;
+    j = 12;
+    s = 12;
+  }
+  else if (card_ID == Name13){
+    card_ID = "";
+    LName = "Pajo";
+    FName = "Danica";
+    NName = "Danica";
+    CYear = "BSCpE-2A";
+    Number = 192203;
+    j = 13;
+    s = 13;
+  }
+  else if (card_ID == Name14){
+    card_ID = "";
+    LName = "Poquita";
+    FName = "Nina Stephane";
+    NName = "Nina";
+    CYear = "BSCpE-2A";
+    Number = 260893;
+    j = 14;
+    s = 14;
+  }
+  else{
+    card_ID = "";
+    digitalWrite(GreenLed, LOW);
+    digitalWrite(RedLed, HIGH);
+    digitalWrite(Buzzer, HIGH);
+    lcd.clear();
+    lcd.setCursor(3, 0);
+    lcd.print("Invalid ID");
+    delay(500);
+    digitalWrite(Buzzer, LOW);
+    lcd.setCursor(0, 1);
+    lcd.print("Please Try Again");
+    goto cont;
+  }
+  
   if(NumbCard[j] == 0){
     NumbCard[j] = 1;
+    center = 8 - LName.length()/2;
     lcd.clear();
-    lcd.setCursor(4,0);
+    lcd.setCursor(center,0);
     lcd.print(LName);
-    lcd.setCursor(3,1);
+    lcd.setCursor(4,1);
     lcd.print("Signed In");
     Serial.print("DATA," + LName + ",");
     Serial.print(FName + ",");
@@ -223,15 +259,19 @@ void loop() {
       digitalWrite(GreenLed,HIGH);
     }
     delay(1000);
+    center = 8 - (NName.length() + 1)/2;
     lcd.clear();
     lcd.setCursor(4,0);
-    lcd.print("Good Day!");
+    lcd.print("Good Day,");
+    lcd.setCursor(center,1);
+    lcd.print(NName + "!");
   }
   else if(NumbCard[j] == 1 && status[s] == 0){
     status[s] = 1;
     n++;
+    center = 8 - LName.length()/2;
     lcd.clear();
-    lcd.setCursor(4,0);
+    lcd.setCursor(center,0);
     lcd.print(LName);
     lcd.setCursor(3,1);
     lcd.print("Signed Out");
@@ -245,16 +285,20 @@ void loop() {
       digitalWrite(GreenLed,HIGH);
     }
     delay(1000);
+    center = 8 - (NName.length() + 1)/2;
     lcd.clear();
     lcd.setCursor(4,0);
-    lcd.print("Good Bye!");
+    lcd.print("Good Bye,");
+    lcd.setCursor(center,1);
+    lcd.print(NName + "!");
   }
   else if(status[s] == 1){
     digitalWrite(GreenLed, LOW);
     digitalWrite(RedLed, HIGH);
     digitalWrite(Buzzer, HIGH);
+    center = 8 - (LName.length() + 4)/2;
     lcd.clear();
-    lcd.setCursor(2,0);
+    lcd.setCursor(center,0);
     lcd.print(LName + " Was");
     lcd.setCursor(0,1);
     lcd.print("Done Signing In");
@@ -270,7 +314,7 @@ void loop() {
   digitalWrite(GreenLed,HIGH);
   digitalWrite(RedLed,LOW);
 
-  if(n==2){ // 2 pa kay duha pay cards namo
+  if(n == 15){
     Serial.print("SAVEWORKBOOKAS,BSCpE-2A - Attendance Sheet - ");
     Serial.println(__DATE__);
     Serial.println("FORCEEXCELQUIT");
